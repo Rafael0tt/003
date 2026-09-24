@@ -1,0 +1,36 @@
+<!DOCTYPE html>     <!--Avisamos pro navegador que este documento usa o PADRÃO MODERNO de HTML.-->
+<html lang="pt-BR">     <!-- Abrimos a página principal e dizemos que a língua oficial dela é o português do Brasil.-->
+<head>     <!--Abrimos a "CABEÇA" da página, onde GUARDAMOS INFORMAÇÕESs INVÍSIVEIS pro usuário, porém MUITO IMPORTANTES para o navegador.-->
+    <meta charset="UTF-8">     <!--Configuramos a codificação para que ACENTOS/SÍMBOLOS apareçam certitinho na tela, o famoso CORRETOR.-->
+    <title>TESTA AI BRUNÃOO</title>     <!--Escolhemos o TÍTULO que vai aparecer lá na ABA DO NAVEGADOR.-->
+</head>     <!--Fechamos a "CABEÇA" da página com o diferencial do "/".-->
+<body>     <!--Abrimos o "CORPO" da página, que é onde fica TUDO o que a GENTE de FATO CONSEGUE VER/CLICAR na tela.-->
+    <h2>TESTANDO ESSA BOSTA PELA 5a VEEEEZ</h2>     <!-- Criamos um TÍTULO GRANDINHO escrito em ("") no topo.-->
+    <input type="text" id="mensagemInput" placeholder="Digite sua mensagem..." onkeydown="verificarEnter(event)"> <!-- Criamos uma CAIXINHA de TEXTO onde você pode DIGITAR a sua mensagem, com um TEXTO DE FUNDO escrito "Digite sua mensagem...".-->
+    <button onclick="enviar()">Enviar</button>     <!-- Criamos um BOTÃO com o nome "ENVIAR". Quando você da um CLICK NELE, ele CHAMA A FUNÇÃO chamada "enviar()".-->
+    <div id="historico"></div> <!-- Criamos uma CAIXINHA INVISÍVEL/UM ESPAÇO RESERVADO, CHAMADA "HISTÓRICO" onde o histórico de todas as mensagens recebidas vai aparecendo empilhado.-->
+
+    <script>     // Abrimos a ÁREA onde vamos ESCREVER OS CÓDIGOS em JavaScript (A INTELIGÊNCIA QUE RODA O NAVEGADOR).
+        const ws = new WebSocket("ws://localhost:8080");     // Fazemos o navegador se conectar diretamente ao nosso servidor de chat lá na porta 8080.
+        ws.onmessage = function(event) {     // (NOSSO OUVINTE DE EVENTOS) Sempre que o SERVIDOR MANDAR uma mensagem nova para a gente, essa função é ACIONADA AUTOMATICAMENTE.
+            const div = document.getElementById("historico");     // Encontramos aquela caixinha invisível chamada "historico" que criamos na linha 11.
+            div.innerHTML += "<p>" + event.data + "</p>";     // Pegamos a mensagem nova que chegou (event.data), colocamos dentro de um parágrafo (<p>) e empilhamos lá no histórico para aparecer na tela.
+        }; // Fecha a chave da função que lida com as mensagens recebidas.
+        function enviar() {     // Criamos a função chamada "enviar(), que é ATIVADA toda vez que você DA UM CLICK NO BOTÃO "Enviar".
+            const texto = document.getElementById("mensagemInput").value; // Olhamos lá na caixinha de texto e pegamos tudo o que você digitou nela.
+            ws.send(texto);     // Pegamos esse texto e disparamos ele através do WebSocket para o servidor.
+            document.getElementById("mensagemImput").value = "";     // Limpa a caixinha de mansagens após enviar.
+        } //     Fecha a chave da função "enviar()".
+        
+        // Criei uma FUNÇÃO que TRABALHA para que ao invéz de ir com o cursor do mouse ate "ENVIAR", basta APERTAR a TECLA "Enter" do teclado.
+
+
+        function verificarEnter(event) {     // Criamos a função verificarEnter() que recebe o evento do teclado (TUDOM QUE VOCÊ APERTA) dentro da CAIXINHA EVENT. 
+            if (event.key == "Enter") 
+            {     // Abrimos um TESTE "enviar(ENTER)" (IF) pra ver se a TECLA EXATA que foi PRESSIONADA (event.key) é o "ENTER".
+                enviar(); // Se a tecla "ENTER" for clicada DISPARA e CHAMA a função ENVIAR.
+            }     // Fecha a chave do IF "enviar(ENTER)".
+        } // SINTAXE.
+    </script>     <!-- Fechamos a ÁREA DE CÓDIGO.-->
+</body>     <!-- Fechamos o "CORPO" da página.-->
+</html>     <!-- Fechamos a ESTRUTURA PRINCIPAl do documento HTML, ENCERRANDO O AQUIVO.-->
